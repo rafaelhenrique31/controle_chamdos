@@ -12,7 +12,6 @@ class _CadastroState extends State<Cadastro> {
 
   GlobalKey <FormState> _formkey = GlobalKey<FormState>();
   String NomeCadastro, emailCadastro, senhaCadastro;
-
   @override
   Widget build(BuildContext context) {
 
@@ -74,6 +73,27 @@ class _CadastroState extends State<Cadastro> {
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: 'digite sua senha'.toUpperCase(),labelStyle: TextStyle(color: Colors.black,fontSize: 15),
+                        prefixIcon: Icon(Icons.security),
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value){
+                        if(value.isEmpty){
+                          return 'o campo nao pode ser vazio';
+                        }
+                        return null;
+                      },
+                      onChanged: (value){
+                        setState(() {
+                          senhaCadastro = value.trim();
+                        });
+                      },
+
+                    ),
+                    SizedBox(height: 15,),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'Confirme sua senha'.toUpperCase(),labelStyle: TextStyle(color: Colors.black,fontSize: 15),
                         prefixIcon: Icon(Icons.security),
                         border: OutlineInputBorder(),
                       ),
