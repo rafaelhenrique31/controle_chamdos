@@ -1,11 +1,41 @@
+import 'dart:html';
+import 'dart:js';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'inseir_chamados.dart';
+import 'package:helpdesk/chamado.dart';
+import 'package:helpdesk/dados.dart';
+import 'package:helpdesk/testegrid.dart';
+import 'package:helpdesk/update.dart';
 
 apbar(){
   return AppBar(
     backgroundColor: Color(0xffff1100),
     leading:Row(children: [ SizedBox(width: 5,),Image.network('https://pbs.twimg.com/profile_images/1264981548643778560/KrtoA4i1.png',width: 50,fit: BoxFit.fill,),],),
     title: Text('controle de chamados na S&I'.toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 20),),
+    actions: [
+      Align(alignment: Alignment.center,child: Text('pesquise o numero da os'.toUpperCase()),),
+      SizedBox(width: 15,),
+      Center(
+        child: SizedBox(
+          width: 200,
+          child: TextField(
+          ),
+        ),
+      ),
+      IconButton(icon: Icon(Icons.search), onPressed: (){}),
+      Align(alignment: Alignment.center,child: Text('pesquise o numero do chamado intero '.toUpperCase()),),
+      SizedBox(width: 15,),
+      Center(
+        child: SizedBox(
+          width: 200,
+          child: TextField(
+          ),
+        ),
+      ),
+      IconButton(icon: Icon(Icons.search), onPressed: (){}),
+      SizedBox(width: 50,),
+    ],
   );
 }
 
@@ -71,6 +101,7 @@ campo2(){
     ),
   );
 }
+
 
 atri(String dado){
   return Container(
@@ -147,3 +178,56 @@ textfild(String text, var controler){
     ),
   );
 }
+
+estatus(String text, var controler){
+  return SizedBox(
+    width: 300,
+    height: 50,
+    child: TextFormField(
+      decoration: InputDecoration(
+        hintText: text,
+        hintStyle: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold,fontFamily:'Montserrat',),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+                color: Colors.red,
+                width: 5
+            ),
+        ),
+      ),
+      controller: controler,
+    ),
+  );
+}
+
+
+// funçoes que funcionam
+void send(String problema,String abriu,String numero_loja,String chamadointerno, String chamadosi, String data_abertura,String status,String hora){
+  FirebaseFirestore.instance.collection('chamados')..add({'chamado_interno': chamadointerno, 'chamado_si':chamadosi,'data':data_abertura,'numeroloja':numero_loja,'problema':problema,'quem abriu':abriu,'status':status,'hora':hora});
+}
+Stream<QuerySnapshot> mostrar(){
+  return FirebaseFirestore.instance.collection('chamados').snapshots();
+}
+void deleta(BuildContext context,DocumentSnapshot doc, int position) async{
+  FirebaseFirestore.instance.collection('chamados').doc(doc.id).delete();
+}
+
+void attstatus(DocumentSnapshot doc, String hora){
+  FirebaseFirestore.instance.collection('chamados').doc(doc.id).update({'hora':hora});
+}
+
+// ---------------------------------
+
+
+void att(String problema,String abriu,String numero_loja,String chamadointerno, String chamadosi, String data_abertura,String status,String hora){
+  FirebaseFirestore.instance.collection('chamados').doc('a4aNnoED54cN9ENx7Aox').set({'chamado_interno': chamadointerno, 'chamado_si':chamadosi,'data':data_abertura,'numeroloja':numero_loja,'problema':problema,'quem abriu':abriu,'status':status,'hora':hora});
+}
+
+
+
+
+  void navegar( DocumentReference doc) {
+    FirebaseFirestore.instance.collection('chamados').doc(doc.id);
+    print(doc.id);
+  }
+

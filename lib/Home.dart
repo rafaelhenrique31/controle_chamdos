@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/cadastro.dart';
-import 'package:helpdesk/tela_principal.dart';
+import 'package:helpdesk/testegrid.dart';
 import 'funcoes.dart';
 import 'cadastro.dart';
 
@@ -88,14 +88,13 @@ class _HomeState extends State<Home> {
                       ),
                       SizedBox(height: 50,),
                       SizedBox(width: 500,
-                          height: 40,
                       ),
                      SizedBox(width: 500,height: 40,
                      child: ElevatedButton(
                        child: Text('Fazer Login'),
                        onPressed: (){
                          auth.signInWithEmailAndPassword(email: email, password: senha).then((_){
-                           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Principal()));
+                           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Grid()));
                          });
                        },
                      ),

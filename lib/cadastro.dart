@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:helpdesk/Home.dart';
 import 'funcoes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class Cadastro extends StatefulWidget {
   @override
   _CadastroState createState() => _CadastroState();
 }
 final auth = FirebaseAuth.instance;
 class _CadastroState extends State<Cadastro> {
-  
 
   GlobalKey <FormState> _formkey = GlobalKey<FormState>();
   String NomeCadastro, emailCadastro, senhaCadastro;
@@ -87,7 +87,6 @@ class _CadastroState extends State<Cadastro> {
                           senhaCadastro = value.trim();
                         });
                       },
-
                     ),
                     SizedBox(height: 15,),
                     TextFormField(
