@@ -7,9 +7,9 @@ import 'package:helpdesk/testegrid.dart';
 import 'chamado.dart';
 import 'testegrid.dart';
 class update extends StatefulWidget {
-
-  final Chamado produto;
-  update(this.produto);
+  final Map data;
+  final DocumentReference ref;
+  update(this.data, this.ref);
 
   @override
   _updateState createState() => _updateState();
@@ -22,7 +22,7 @@ class _updateState extends State<update> {
   TextEditingController chamadointerno = TextEditingController();
   TextEditingController chamadosi = TextEditingController();
   TextEditingController data_abertura = TextEditingController();
-  TextEditingController numeroloja = TextEditingController();
+  TextEditingController numero_loja = TextEditingController();
   TextEditingController problema = TextEditingController();
   TextEditingController abriu = TextEditingController();
   TextEditingController hora = TextEditingController();
@@ -35,7 +35,7 @@ class _updateState extends State<update> {
           onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Grid(),));},
           child: Icon(Icons.event_note),
         ),
-        appBar: apbar(),
+        appBar: apbarlogado(),
         body: Form(
           key: _formkey,
           child: ListView(
@@ -66,21 +66,13 @@ class _updateState extends State<update> {
                                 ),
                                 Row(
                                   children: [
-                                    textfild('data abertura',data_abertura),
+                                    textfild('descreva o problema',problema),
                                     Spacer(),
-                                    textfild('numero da loja',numeroloja),
+                                    textfild('numero da loja',numero_loja),
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    textfild('descreva o problema',problema),
-                                    Spacer(),
-                                    textfild('quem abriu o chamado',abriu),
-                                  ],
-                                ), Row(
-                                  children: [
-                                    textfild('hora da abertura ',hora),
-                                    Spacer(),
                                     textfild('Status atual',status),
                                   ],
                                 ),
@@ -89,7 +81,8 @@ class _updateState extends State<update> {
                                   child: ElevatedButton(
                                     child: Text('Salvar'),
                                     onPressed: (){
-                                      FirebaseFirestore.instance.collection('chamados').doc(widget.produto.id).update({'status':status});
+                                      FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'status':status.text,});
+                                      Navigator.pop(context);
                                   },
                                   ),
                                 ),
@@ -107,4 +100,10 @@ class _updateState extends State<update> {
         )
     );
   }
+  void atualizar(String problema,String abriu,String numero_loja,String chamadointerno, String chamadosi, String data_abertura,String status,String hora){
+    FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).set({'chamado_interno': chamadointerno, 'chamado_si':chamadosi,'data':data_abertura,'numeroloja':numero_loja,'problema':problema,'quem abriu':abriu,'status':status,'hora':hora});
+  }
+
 }
+
+

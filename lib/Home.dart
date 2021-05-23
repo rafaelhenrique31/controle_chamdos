@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/cadastro.dart';
+import 'package:helpdesk/redefinir_senha.dart';
 import 'package:helpdesk/testegrid.dart';
 import 'funcoes.dart';
 import 'cadastro.dart';
@@ -58,7 +59,7 @@ class _HomeState extends State<Home> {
                         ),
                         validator: (value){
                           if(value.isEmpty){
-                            return 'o campo nao pode ser vazio';
+                            return 'Digite seu e-mail';
                           }
                           return null;
                         },
@@ -78,7 +79,7 @@ class _HomeState extends State<Home> {
                         ),
                         validator: (value){
                           if(value.isEmpty){
-                            return 'o campo nao pode ser vazio';
+                            return 'Digite sua senha';
                           }
                           return null;
                         },
@@ -93,9 +94,11 @@ class _HomeState extends State<Home> {
                      child: ElevatedButton(
                        child: Text('Fazer Login'),
                        onPressed: (){
-                         auth.signInWithEmailAndPassword(email: email, password: senha).then((_){
-                           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Grid()));
-                         });
+                         if(Formkey.currentState.validate()){
+                           auth.signInWithEmailAndPassword(email: email, password: senha).then((_){
+                             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Grid()));
+                           });
+                         }
                        },
                      ),
                      ),
@@ -117,7 +120,9 @@ class _HomeState extends State<Home> {
                             SizedBox(width: 200,
                               height: 40,
                               child: ElevatedButton(
-                                onPressed: (){},
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Redefinir(),));
+                                },
                                 child: Text('esqueci minha senha'),
                               ),
                             ),

@@ -1,10 +1,12 @@
 import 'dart:html';
-
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/funcoes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/testegrid.dart';
 import 'dados.dart';
+import 'package:date_format/date_format.dart';
 class Inserir extends StatefulWidget {
 
   @override
@@ -25,15 +27,22 @@ class _InserirState extends State<Inserir> {
   TextEditingController hora = TextEditingController();
   TextEditingController status = TextEditingController();
 
+  Timestamp create ;
+  String email;
+
+
+
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
+
       floatingActionButton: FloatingActionButton(
         onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Grid(),));},
         child: Icon(Icons.event_note),
       ),
-      appBar: apbar(),
+      appBar: apbarlogado(),
       body: Form(
         key: _formkey,
         child: ListView(
@@ -65,31 +74,26 @@ class _InserirState extends State<Inserir> {
                               ),
                               Row(
                                 children: [
-                                  textfild('data abertura',data_abertura),
+                                  textfild('descreva o problema',problema),
                                   Spacer(),
                                   textfild('numero da loja',numeroloja),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  textfild('descreva o problema',problema),
-                                  Spacer(),
-                                  textfild('quem abriu o chamado',abriu),
-                                ],
-                              ), Row(
-                                children: [
-                                  textfild('hora da abertura ',hora),
-                                  Spacer(),
                                   textfild('Status atual',status),
+                                  Spacer(),
                                 ],
                               ),
                               SizedBox(width: 500,
                                 height: 80,
                                 child: ElevatedButton(
                                   onPressed: (){
-                                    send(chamadointerno.text,chamadosi.text,data_abertura.text,numeroloja.text,problema.text,abriu.text,hora.text,status.text);
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Grid()));
-                                  },
+                                    if(_formkey.currentState.validate()){
+                                      send(chamadointerno.text,chamadosi.text,numeroloja.text,problema.text,status.text,create,email);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Grid()));
+                                    }
+                                    },
                                   child: Text('Salvar'),
                                 ),
                               ),

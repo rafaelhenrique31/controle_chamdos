@@ -1,16 +1,24 @@
 import 'dart:async';
 import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:helpdesk/chamado_encerrado.dart';
 import 'package:helpdesk/funcoes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helpdesk/update.dart';
 import 'inseir_chamados.dart';
 import 'update.dart';
 import 'chamado.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class Grid extends StatefulWidget {
-
+  // String chamadointerno;
+  // String chamadosi ;
+  // String data_abertura ;
+  // String numeroloja ;
+  // String problema ;
+  // String abriu ;
+  // String status;
+  // Grid(this.chamadointerno,this.numeroloja,this.chamadosi,this.status,this.data_abertura,this.problema,this.abriu);
 
   @override
   _GridState createState() => _GridState();
@@ -23,121 +31,134 @@ class _GridState extends State<Grid> {
   clearAll(){
     status.text = "";
   }
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
+
+    Timestamp create;
     return Form(child:
     Scaffold(
       key: formKey,
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.menu),
+          hoverColor: Colors.black,
+          backgroundColor: Colors.red,
+          child: Icon(Icons.add),
           onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Inserir(),));},
         ),
-        appBar: apbar(),
+        appBar: apbarlogado(),
         body:
-        Padding(
-          padding: const EdgeInsets.only(right: 16,left: 16,top: 8),
-          child: Container(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: mostrar(),
-              builder: (context , snapshot){
-                switch (snapshot.connectionState){
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  default:
-                    List<DocumentSnapshot> documentos= snapshot.data.docs;
-                    return GridView.builder(
-                        reverse: false,
-                        gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisExtent: 400,
-                        ),
-                        itemCount: documentos.length,
-                        itemBuilder:(context , index) {
-                          return  Column(
-                            children: [
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Card(
-                                      elevation: 15,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                        ),
-                                        height: 350,
-                                        width: 450,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text('abertura chamado :  ' +documentos[index].data()['numeroloja'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                              Spacer(),
-                                              Text('numero loja : '+documentos[index].data()['chamado_interno'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                              Spacer(),
-                                              Text('chamado interno : '+documentos[index].data()['problema'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                              Spacer(),
-                                              Text('chamado si : '+documentos[index].data()['quem abriu'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                              Spacer(),
-                                              Text('quem abriu : '+documentos[index].data()['data'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                              Spacer(),
-                                              Text('descreva o problema : '+documentos[index].data()['chamado_si'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                              Spacer(),
-                                              Text('hora :'+documentos[index].data()['status'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                              Spacer(),
-                                              Text('status: '+documentos[index].data()['hora'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
-                                              SizedBox(height: 15,),
-                                              SizedBox(
-                                                width: 300,
-                                                height: 50,
-                                                child: TextFormField(
-                                                  decoration: InputDecoration(
-                                                    hintText: 'atualize o status',
-                                                    hintStyle: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold,fontFamily:'Montserrat',),
-                                                    border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(5),
-                                                      borderSide: BorderSide(
-                                                          color: Colors.red,
-                                                          width: 5
+       Container(
+            child: Column(
+              children: [
+                Container(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('chamados em aberto'.toUpperCase(),style: TextStyle(color: Colors.black,fontSize: 30),),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
+                    height: 800,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: mostrar(),
+                      builder: (context , snapshot){
+                        switch (snapshot.connectionState){
+                          case ConnectionState.none:
+                          case ConnectionState.waiting:
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          default:
+                            List<DocumentSnapshot> documentos= snapshot.data.docs;
+                            return GridView.builder(
+                                reverse: false,
+                                gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  mainAxisExtent: 400,
+                                ),
+                                itemCount: documentos.length,
+                                itemBuilder:(context , index) {
+                                  Map data = snapshot.data.docs[index].data();
+                                  return  Column(
+                                    children: [
+                                      Container(
+                                        child: Row(
+                                          children: [
+                                            Card(
+
+                                              elevation: 15,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                ),
+                                                height: 350,
+                                                width: 500,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(15),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        height: 60,
+                                                        width: 400,
+                                                        child: Image.asset('imagens/rede.png'),
                                                       ),
-                                                    ),
+                                                      SizedBox(height: 5,),
+                                                      Text('Numero Da Loja : '+documentos[index].data()['chamado_interno'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Spacer(),
+                                                      Text('Chamado Interno : '+documentos[index].data()['problema'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Spacer(),
+                                                      Text('Numero da OS : '+documentos[index].data()['numeroloja'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Spacer(),
+                                                      Text('Descreva o Problema : '+documentos[index].data()['chamado_si'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Spacer(),
+                                                      Text('Status Atual: '+documentos[index].data()['status'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
+                                                      Spacer(),
+                                                      Text('Data e Hora abertura: '+documentos[index].data()['create'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
+                                                      Spacer(),
+                                                      Text('E-mail abertura chamado: '+documentos[index].data()['email'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
+                                                      SizedBox(height: 15,),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                          IconButton(icon: Icon(Icons.drive_file_rename_outline), onPressed: (){
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => update(data, snapshot.data.docs[index].reference,),));
+                                                          }),
+                                                          SizedBox(width: 15,),
+                                                          IconButton(icon: Icon(Icons.delete,color: Colors.red,), onPressed: (){
+                                                           // Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado(data, snapshot.data.docs[index].reference, 'problema', 'quem', 'loja', 'status', 'chamado_si', 'chamado_interno'),));
+                                                            //chamado_encerrado(snapshot.data.docs[index].reference);
+                                                            deleta(context,documentos[index],index);
+                                                          }),
+                                                        ],
+                                                      )
+                                                    ],
                                                   ),
-                                                  controller: status,
-                                                  onFieldSubmitted: clearAll(),
                                                 ),
                                               ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  IconButton(icon: Icon(Icons.drive_file_rename_outline), onPressed: (){
-                                                    attstatus(documentos[index],status.text);
-                                                  }),
-                                                  SizedBox(width: 15,),
-                                                  IconButton(icon: Icon(Icons.delete,color: Colors.red,), onPressed: (){deleta(context,documentos[index],index);}),
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
+                                    ],
+                                  );
+                                }
+                            );
                         }
-                    );
-                }
-              },
+                      },
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
+
         )
-    )
     );
   }
 }

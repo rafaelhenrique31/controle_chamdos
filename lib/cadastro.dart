@@ -11,7 +11,9 @@ final auth = FirebaseAuth.instance;
 class _CadastroState extends State<Cadastro> {
 
   GlobalKey <FormState> _formkey = GlobalKey<FormState>();
-  String NomeCadastro, emailCadastro, senhaCadastro;
+
+  var name, email, photoUrl, uid, emailVerified;
+  String NomeCadastro, emailCadastro, senhaCadastro,senhaCadastro1;
   @override
   Widget build(BuildContext context) {
 
@@ -41,9 +43,14 @@ class _CadastroState extends State<Cadastro> {
                         prefixIcon: Icon(Icons.drive_file_rename_outline,),
 
                       ),
+                      onChanged: (value){
+                        setState(() {
+                          NomeCadastro = value.trim();
+                        });
+                      },
                       validator: (value){
                         if(value.isEmpty){
-                          return 'o campo nao pode ser vazio';
+                          return 'Digite seu nome';
                         }
                         return null;
                       },
@@ -57,7 +64,7 @@ class _CadastroState extends State<Cadastro> {
                       ),
                       validator: (value){
                         if(value.isEmpty){
-                          return 'o campo nao pode ser vazio';
+                          return 'Digite seu e-mail';
                         }
                         return null;
                       },
@@ -77,8 +84,8 @@ class _CadastroState extends State<Cadastro> {
                         border: OutlineInputBorder(),
                       ),
                       validator: (value){
-                        if(value.isEmpty){
-                          return 'o campo nao pode ser vazio';
+                        if(value.isEmpty && value.length<5 ){
+                          return 'Digite sua senha';
                         }
                         return null;
                       },
@@ -87,27 +94,6 @@ class _CadastroState extends State<Cadastro> {
                           senhaCadastro = value.trim();
                         });
                       },
-                    ),
-                    SizedBox(height: 15,),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Confirme sua senha'.toUpperCase(),labelStyle: TextStyle(color: Colors.black,fontSize: 15),
-                        prefixIcon: Icon(Icons.security),
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value){
-                        if(value.isEmpty){
-                          return 'o campo nao pode ser vazio';
-                        }
-                        return null;
-                      },
-                      onChanged: (value){
-                        setState(() {
-                          senhaCadastro = value.trim();
-                        });
-                      },
-
                     ),
                     SizedBox(height: 15,),
                     SizedBox(
@@ -115,9 +101,11 @@ class _CadastroState extends State<Cadastro> {
                       height: 50,
                       child: ElevatedButton(
                           onPressed: (){
-                            auth.createUserWithEmailAndPassword(email: emailCadastro, password: senhaCadastro).then((_){
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
-                            });
+                            if(_formkey.currentState.validate()){
+                              auth.createUserWithEmailAndPassword(email: emailCadastro, password: senhaCadastro).then((_){
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+                              });
+                            }
                           }, child: Text('SALVAR CADASTRO',style: TextStyle(fontSize: 20),)),
                     )
                   ],

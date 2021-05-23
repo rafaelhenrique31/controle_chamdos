@@ -1,18 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/cadastro.dart';
+import 'package:helpdesk/chamado_encerrado.dart';
 import 'package:helpdesk/dados.dart';
 import 'package:helpdesk/inseir_chamados.dart';
+import 'package:helpdesk/redefinir_senha.dart';
 import 'package:helpdesk/update.dart';
 import 'Home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/testegrid.dart';
 import 'firestore.dart';
-
-
 void main() async{
-
-
 
   final auth = FirebaseAuth.instance;
   runApp(MaterialApp(
@@ -24,7 +22,7 @@ void main() async{
           )
         )
     ),
-    home: Grid(),
+    home: Home(),
   ));
 }
 
