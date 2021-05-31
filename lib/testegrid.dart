@@ -10,6 +10,7 @@ import 'inseir_chamados.dart';
 import 'update.dart';
 import 'chamado.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class Grid extends StatefulWidget {
   // String chamadointerno;
   // String chamadosi ;
@@ -19,7 +20,6 @@ class Grid extends StatefulWidget {
   // String abriu ;
   // String status;
   // Grid(this.chamadointerno,this.numeroloja,this.chamadosi,this.status,this.data_abertura,this.problema,this.abriu);
-
   @override
   _GridState createState() => _GridState();
 }
@@ -127,13 +127,14 @@ class _GridState extends State<Grid> {
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
                                                           IconButton(icon: Icon(Icons.drive_file_rename_outline), onPressed: (){
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => update(data, snapshot.data.docs[index].reference,),));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => update(data, snapshot.data.docs[index].reference,documentos[index].data()['problema'],documentos[index].data()['numeroloja'],documentos[index].data()['chamado_si'],documentos[index].data()['status'],documentos[index].data()['chamado_interno']),));
                                                           }),
                                                           SizedBox(width: 15,),
                                                           IconButton(icon: Icon(Icons.delete,color: Colors.red,), onPressed: (){
-                                                           // Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado(data, snapshot.data.docs[index].reference, 'problema', 'quem', 'loja', 'status', 'chamado_si', 'chamado_interno'),));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado( data,snapshot.data.docs[index].reference, documentos[index].data()['problema'], documentos[index].data() ['numeroloja'],documentos[index].data()['chamado_si'], documentos[index].data()['status'], documentos[index].data()['chamado_interno'], documentos[index].data()['email'],documentos[index].data()['create'],),));
+
                                                             //chamado_encerrado(snapshot.data.docs[index].reference);
-                                                            deleta(context,documentos[index],index);
+                                                            //deleta(context,documentos[index],index);
                                                           }),
                                                         ],
                                                       )

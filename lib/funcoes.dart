@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/chamado.dart';
-import 'package:helpdesk/dados.dart';
 import 'package:helpdesk/testegrid.dart';
 import 'package:helpdesk/update.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +21,7 @@ apbarlogado(){
     title: Text('controle de chamados na S&I'.toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 20),),
     actions: [
       Center(
-        child: Text('usuario logado:' + FirebaseAuth.instance.currentUser.email,),
+        child: Text('usuario logado.:  ' + FirebaseAuth.instance.currentUser.email,),
       )
     ],
   );
@@ -37,6 +36,31 @@ textfild(String text, var controler){
     child: TextFormField(
       decoration: InputDecoration(
         hintText: text,
+        hintStyle: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(
+            )
+        ),
+      ),
+      controller: controler,
+      validator: (value){
+        if(value.isEmpty){
+          return 'o campo nao pode ser vazio';
+        }
+        return null;
+      },
+    ),
+  );
+}
+textfildatt(String text, var controler,String label){
+  return SizedBox(
+    width: 300,
+    height: 100,
+    child: TextFormField(
+      decoration: InputDecoration(
+        hintText: text,
+        labelText: label ,
         hintStyle: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
@@ -75,10 +99,6 @@ Stream<QuerySnapshot> mostrar_encerrado(){
   return FirebaseFirestore.instance.collection('chamados').orderBy('create',descending: true).snapshots();
 }
 
-void teste(DocumentReference doc){
-  FirebaseFirestore.instance.collection('chamados').doc(doc.id).collection('encerrado');
-}
-
 // ---------------------------------
 
 void chamado_encerrado(DocumentReference ref){
@@ -86,3 +106,6 @@ void chamado_encerrado(DocumentReference ref){
 }
 
 
+void teste(DocumentReference doc){
+  FirebaseFirestore.instance.collection('chamados').doc(doc.id).collection('encerrado');
+}

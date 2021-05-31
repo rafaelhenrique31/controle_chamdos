@@ -41,8 +41,7 @@ class _RedefinirState extends State<Redefinir> {
                   SizedBox(width: 450,
                   height: 50,
                     child: ElevatedButton(onPressed: (){
-
-                      auth.sendPasswordResetEmail(email: email.text);
+                  auth.sendPasswordResetEmail(email: email.text);
                       Navigator.pop(context);
                     }, child: Text('redefinir senha')),
                   )

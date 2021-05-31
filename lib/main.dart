@@ -2,16 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/cadastro.dart';
 import 'package:helpdesk/chamado_encerrado.dart';
-import 'package:helpdesk/dados.dart';
 import 'package:helpdesk/inseir_chamados.dart';
 import 'package:helpdesk/redefinir_senha.dart';
 import 'package:helpdesk/update.dart';
 import 'Home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/testegrid.dart';
-import 'firestore.dart';
 void main() async{
-
+  var lista = new List();
   final auth = FirebaseAuth.instance;
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -22,7 +20,7 @@ void main() async{
           )
         )
     ),
-    home: Home(),
+     home: FirebaseAuth.instance.currentUser == null ? Home() : Grid(),
   ));
 }
 
