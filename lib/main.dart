@@ -6,10 +6,13 @@ import 'package:helpdesk/inseir_chamados.dart';
 import 'package:helpdesk/redefinir_senha.dart';
 import 'package:helpdesk/update.dart';
 import 'Home.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/testegrid.dart';
 void main() async{
-  var lista = new List();
+  initializeDateFormatting();
+  Intl.defaultLocale = 'pt_BR';
   final auth = FirebaseAuth.instance;
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -20,7 +23,7 @@ void main() async{
           )
         )
     ),
-     home: FirebaseAuth.instance.currentUser == null ? Home() : Grid(),
+    home: FirebaseAuth.instance.currentUser == null ? Home() : Grid(),
   ));
 }
 

@@ -18,7 +18,6 @@ class _encerradoState extends State<encerrado> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: apbarlogado(),
       body: Column(
         children: [
           Text(widget.status),

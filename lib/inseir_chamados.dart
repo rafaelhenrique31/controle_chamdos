@@ -1,11 +1,11 @@
-import 'dart:html';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/funcoes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/testegrid.dart';
-
+import 'package:date_format/date_format.dart';
+import 'package:helpdesk/Home.dart';
 
 class Inserir extends StatefulWidget {
   @override
@@ -26,11 +26,16 @@ class _InserirState extends State<Inserir> {
   TextEditingController hora = TextEditingController();
   TextEditingController status = TextEditingController();
 
-  Timestamp create;
-  String email;
+  //DateTime create ;
 
+
+
+  String email;
   @override
   Widget build(BuildContext context) {
+    var create ;
+
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -42,7 +47,25 @@ class _InserirState extends State<Inserir> {
           },
           child: Icon(Icons.event_note),
         ),
-        appBar: apbarlogado(),
+        appBar:  AppBar(
+          backgroundColor: Color(0xffff1100),
+          leading:Row(children: [ SizedBox(width: 5,),Image.network('https://pbs.twimg.com/profile_images/1264981548643778560/KrtoA4i1.png',width: 50,fit: BoxFit.fill,),],),
+          title: Text('controle de chamados na S&I'.toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 20),),
+          actions: [
+            Center(
+                child: Row(
+                  children: [
+                    Text('usuario logado.:  ' + FirebaseAuth.instance.currentUser.email,),
+                    IconButton(icon: Icon(Icons.exit_to_app), onPressed: (){
+                      FirebaseAuth.instance.signOut();
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
+                    })
+                  ],
+                )
+            )
+          ],
+
+        ),
         body: Form(
           key: _formkey,
           child: ListView(
@@ -134,3 +157,4 @@ class _InserirState extends State<Inserir> {
         ));
   }
 }
+

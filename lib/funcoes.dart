@@ -1,12 +1,15 @@
 import 'dart:html';
-import 'dart:js';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:helpdesk/Home.dart';
 import 'package:helpdesk/chamado.dart';
 import 'package:helpdesk/testegrid.dart';
-import 'package:helpdesk/update.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:helpdesk/update.dart';
+
+
 apbar(){
   return AppBar(
     backgroundColor: Color(0xffff1100),
@@ -14,20 +17,6 @@ apbar(){
     title: Text('controle de chamados na S&I'.toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 20),),
   );
 }
-apbarlogado(){
-  return AppBar(
-    backgroundColor: Color(0xffff1100),
-    leading:Row(children: [ SizedBox(width: 5,),Image.network('https://pbs.twimg.com/profile_images/1264981548643778560/KrtoA4i1.png',width: 50,fit: BoxFit.fill,),],),
-    title: Text('controle de chamados na S&I'.toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 20),),
-    actions: [
-      Center(
-        child: Text('usuario logado.:  ' + FirebaseAuth.instance.currentUser.email,),
-      )
-    ],
-  );
-}
-
-
 
 textfild(String text, var controler){
   return SizedBox(
@@ -79,14 +68,11 @@ textfildatt(String text, var controler,String label){
   );
 }
 
-
-
-
 // funçoes que funcionam
-void send(String problema,String numero_loja,String chamadointerno, String chamadosi,String status,Timestamp create, String email){
+void send(String problema,String numero_loja,String chamadointerno, String chamadosi,String status,DateTime create, String email){
   FirebaseFirestore.instance.collection('chamados')..add({'chamado_interno': chamadointerno, 'chamado_si':chamadosi,'numeroloja':numero_loja,
     'problema':problema,
-    'status':status,'create': DateTime.now().toString(), 'email': FirebaseAuth.instance.currentUser.email});
+    'status':status,'create': DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()).toString(), 'email': FirebaseAuth.instance.currentUser.email});
 }
 Stream<QuerySnapshot> mostrar(){
   return FirebaseFirestore.instance.collection('chamados').orderBy('create',descending: true).snapshots();

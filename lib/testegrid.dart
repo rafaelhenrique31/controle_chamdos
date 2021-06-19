@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:helpdesk/Home.dart';
 import 'package:helpdesk/chamado_encerrado.dart';
 import 'package:helpdesk/funcoes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,9 @@ import 'inseir_chamados.dart';
 import 'update.dart';
 import 'chamado.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:duration/duration.dart';
+import 'package:date_format/date_format.dart';
+import 'package:intl/intl.dart';
 class Grid extends StatefulWidget {
   // String chamadointerno;
   // String chamadosi ;
@@ -25,6 +28,9 @@ class Grid extends StatefulWidget {
 }
 
 class _GridState extends State<Grid> {
+
+
+
   TextEditingController status = TextEditingController();
   final formKey = GlobalKey<FormState>();
   List<Chamado> items;
@@ -36,7 +42,10 @@ class _GridState extends State<Grid> {
   @override
   Widget build(BuildContext context) {
 
-    Timestamp create;
+    DateTime create ;
+
+
+
     return Form(child:
     Scaffold(
       key: formKey,
@@ -46,11 +55,31 @@ class _GridState extends State<Grid> {
           child: Icon(Icons.add),
           onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Inserir(),));},
         ),
-        appBar: apbarlogado(),
+        appBar: AppBar(
+              backgroundColor: Color(0xffff1100),
+              leading:Row(children: [ SizedBox(width: 5,),Image.network('https://pbs.twimg.com/profile_images/1264981548643778560/KrtoA4i1.png',width: 50,fit: BoxFit.fill,),],),
+              title: Text('controle de chamados na S&I'.toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 20),),
+              actions: [
+                Center(
+                    child: Row(
+                      children: [
+                        Text('usuario logado:  ' + FirebaseAuth.instance.currentUser.email,),
+                        SizedBox(width: 20,),
+                        IconButton(icon: Icon(Icons.exit_to_app), onPressed: (){
+                          FirebaseAuth.instance.signOut();
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
+                        })
+                      ],
+                    )
+                )
+              ],
+
+        ),
         body:
        Container(
             child: Column(
               children: [
+                //Text(DateFormat.yMd().add_jm().format(agr)),
                 Container(
                   height: 50,
                   child: Row(
@@ -127,14 +156,14 @@ class _GridState extends State<Grid> {
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
                                                           IconButton(icon: Icon(Icons.drive_file_rename_outline), onPressed: (){
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => update(data, snapshot.data.docs[index].reference,documentos[index].data()['problema'],documentos[index].data()['numeroloja'],documentos[index].data()['chamado_si'],documentos[index].data()['status'],documentos[index].data()['chamado_interno']),));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => update(data, snapshot.data.docs[index].reference,documentos[index].data()['problema'],documentos[index].data()['numeroloja'],documentos[index].data()['chamado_si'],documentos[index].data()['status'],documentos[index].data()['chamado_interno'],documentos[index].data()['create']), ));
                                                           }),
                                                           SizedBox(width: 15,),
                                                           IconButton(icon: Icon(Icons.delete,color: Colors.red,), onPressed: (){
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado( data,snapshot.data.docs[index].reference, documentos[index].data()['problema'], documentos[index].data() ['numeroloja'],documentos[index].data()['chamado_si'], documentos[index].data()['status'], documentos[index].data()['chamado_interno'], documentos[index].data()['email'],documentos[index].data()['create'],),));
+                                                            // Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado( data,snapshot.data.docs[index].reference, documentos[index].data()['problema'], documentos[index].data() ['numeroloja'],documentos[index].data()['chamado_si'], documentos[index].data()['status'], documentos[index].data()['chamado_interno'], documentos[index].data()['email'],documentos[index].data()['create'],),));
 
                                                             //chamado_encerrado(snapshot.data.docs[index].reference);
-                                                            //deleta(context,documentos[index],index);
+                                                            deleta(context,documentos[index],index);
                                                           }),
                                                         ],
                                                       )
