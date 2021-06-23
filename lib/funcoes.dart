@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/Home.dart';
@@ -67,12 +68,13 @@ textfildatt(String text, var controler,String label){
     ),
   );
 }
-
+// var now=DateTime.now();
+//   var sixtyDaysFromNow = now.add(const Duration(minutes: 1));
 // funçoes que funcionam
-void send(String problema,String numero_loja,String chamadointerno, String chamadosi,String status,DateTime create, String email){
+void send(String problema,String numero_loja,String chamadointerno, String chamadosi,String status,DateTime create, String email, DateTime duracao){
   FirebaseFirestore.instance.collection('chamados')..add({'chamado_interno': chamadointerno, 'chamado_si':chamadosi,'numeroloja':numero_loja,
     'problema':problema,
-    'status':status,'create': DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()).toString(), 'email': FirebaseAuth.instance.currentUser.email});
+    'status':status,'create': DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()).toString(), 'email': FirebaseAuth.instance.currentUser.email, 'duracao':DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now().add(hours(8)))});
 }
 Stream<QuerySnapshot> mostrar(){
   return FirebaseFirestore.instance.collection('chamados').orderBy('create',descending: true).snapshots();

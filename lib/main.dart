@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/cadastro.dart';
 import 'package:helpdesk/chamado_encerrado.dart';
@@ -10,7 +14,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/testegrid.dart';
+import 'package:intl/intl.dart';
 void main() async{
+  const twentyMillis = const Duration(milliseconds:20);
+
   initializeDateFormatting();
   Intl.defaultLocale = 'pt_BR';
   final auth = FirebaseAuth.instance;

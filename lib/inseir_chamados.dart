@@ -29,12 +29,16 @@ class _InserirState extends State<Inserir> {
   //DateTime create ;
 
 
-
+  DateTime create ;
+  DateTime duracao;
   String email;
+
   @override
   Widget build(BuildContext context) {
-    var create ;
-
+    void calcular(){
+      if(create.isBefore(duracao))
+        print('teste realizado');
+    }
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -133,7 +137,8 @@ class _InserirState extends State<Inserir> {
                                             problema.text,
                                             status.text,
                                             create,
-                                            email);
+                                            email,
+                                            duracao);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

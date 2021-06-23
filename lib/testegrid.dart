@@ -15,23 +15,16 @@ import 'package:duration/duration.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
 class Grid extends StatefulWidget {
-  // String chamadointerno;
-  // String chamadosi ;
-  // String data_abertura ;
-  // String numeroloja ;
-  // String problema ;
-  // String abriu ;
-  // String status;
-  // Grid(this.chamadointerno,this.numeroloja,this.chamadosi,this.status,this.data_abertura,this.problema,this.abriu);
+  DateTime create;
+  DateTime duracao;
+  Grid({this.create,this.duracao});
   @override
   _GridState createState() => _GridState();
 }
 
 class _GridState extends State<Grid> {
 
-
-
-  TextEditingController status = TextEditingController();
+ TextEditingController status = TextEditingController();
   final formKey = GlobalKey<FormState>();
   List<Chamado> items;
   clearAll(){
@@ -41,12 +34,8 @@ class _GridState extends State<Grid> {
 
   @override
   Widget build(BuildContext context) {
-
-    DateTime create ;
-
-
-
-    return Form(child:
+    //DateTime create ;
+   return Form(child:
     Scaffold(
       key: formKey,
         floatingActionButton: FloatingActionButton(
@@ -133,7 +122,7 @@ class _GridState extends State<Grid> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Container(
-                                                        height: 60,
+                                                        height: 70,
                                                         width: 400,
                                                         child: Image.asset('imagens/rede.png'),
                                                       ),
@@ -150,18 +139,19 @@ class _GridState extends State<Grid> {
                                                       Spacer(),
                                                       Text('Data e Hora abertura: '+documentos[index].data()['create'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
                                                       Spacer(),
+                                                      Text('Previsao de atendimento: '+documentos[index].data()['duracao'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
+                                                      Spacer(),
                                                       Text('E-mail abertura chamado: '+documentos[index].data()['email'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
                                                       SizedBox(height: 15,),
-                                                      Row(
+                                                     Row(
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
-                                                          IconButton(icon: Icon(Icons.drive_file_rename_outline), onPressed: (){
+                                                IconButton(icon: Icon(Icons.drive_file_rename_outline), onPressed: (){
                                                             Navigator.push(context, MaterialPageRoute(builder: (context) => update(data, snapshot.data.docs[index].reference,documentos[index].data()['problema'],documentos[index].data()['numeroloja'],documentos[index].data()['chamado_si'],documentos[index].data()['status'],documentos[index].data()['chamado_interno'],documentos[index].data()['create']), ));
                                                           }),
                                                           SizedBox(width: 15,),
                                                           IconButton(icon: Icon(Icons.delete,color: Colors.red,), onPressed: (){
                                                             // Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado( data,snapshot.data.docs[index].reference, documentos[index].data()['problema'], documentos[index].data() ['numeroloja'],documentos[index].data()['chamado_si'], documentos[index].data()['status'], documentos[index].data()['chamado_interno'], documentos[index].data()['email'],documentos[index].data()['create'],),));
-
                                                             //chamado_encerrado(snapshot.data.docs[index].reference);
                                                             deleta(context,documentos[index],index);
                                                           }),
