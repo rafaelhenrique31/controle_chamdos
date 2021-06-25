@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:helpdesk/Home.dart';
 import 'package:helpdesk/chamado_encerrado.dart';
 import 'package:helpdesk/funcoes.dart';
@@ -15,9 +16,6 @@ import 'package:duration/duration.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
 class Grid extends StatefulWidget {
-  DateTime create;
-  DateTime duracao;
-  Grid({this.create,this.duracao});
   @override
   _GridState createState() => _GridState();
 }
@@ -26,25 +24,46 @@ class _GridState extends State<Grid> {
 
  TextEditingController status = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  List<Chamado> items;
-  clearAll(){
-    status.text = "";
-  }
   final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-    //DateTime create ;
    return Form(child:
     Scaffold(
       key: formKey,
-        floatingActionButton: FloatingActionButton(
-          hoverColor: Colors.black,
-          backgroundColor: Colors.red,
-          child: Icon(Icons.add),
-          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Inserir(),));},
+        floatingActionButton: SpeedDial(
+          icon: Icons.menu,
+          activeIcon: Icons.menu,
+          buttonSize: 56.0,
+          visible: true,
+          closeManually: false,
+          renderOverlay: false,
+          curve: Curves.bounceIn,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.2,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 8.0,
+          children: [
+            SpeedDialChild(
+              child: IconButton(icon :(Icon(Icons.add)),onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Inserir(),));
+              }),
+              backgroundColor: Colors.red,
+              label: 'Inserir Chamado',
+              labelStyle: TextStyle(fontSize: 18.0),
+            ),
+            SpeedDialChild(
+              child: IconButton(icon:(Icon(Icons.close)), onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado(),));
+              },),
+              backgroundColor: Colors.blue,
+              label: 'Vetificar chamados encerrados',
+              labelStyle: TextStyle(fontSize: 18.0),
+            ),
+          ],
         ),
-        appBar: AppBar(
+      appBar: AppBar(
               backgroundColor: Color(0xffff1100),
               leading:Row(children: [ SizedBox(width: 5,),Image.network('https://pbs.twimg.com/profile_images/1264981548643778560/KrtoA4i1.png',width: 50,fit: BoxFit.fill,),],),
               title: Text('controle de chamados na S&I'.toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 20),),
@@ -62,7 +81,6 @@ class _GridState extends State<Grid> {
                     )
                 )
               ],
-
         ),
         body:
        Container(
@@ -83,7 +101,7 @@ class _GridState extends State<Grid> {
                   child: Container(
                     height: 800,
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: mostrar(),
+                      stream:FirebaseFirestore.instance.collection('chamados').where('stExcluido',isEqualTo: 0).orderBy('create',descending: true).snapshots(),
                       builder: (context , snapshot){
                         switch (snapshot.connectionState){
                           case ConnectionState.none:
@@ -108,7 +126,6 @@ class _GridState extends State<Grid> {
                                         child: Row(
                                           children: [
                                             Card(
-
                                               elevation: 15,
                                               child: Container(
                                                 decoration: BoxDecoration(
@@ -151,9 +168,8 @@ class _GridState extends State<Grid> {
                                                           }),
                                                           SizedBox(width: 15,),
                                                           IconButton(icon: Icon(Icons.delete,color: Colors.red,), onPressed: (){
-                                                            // Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado( data,snapshot.data.docs[index].reference, documentos[index].data()['problema'], documentos[index].data() ['numeroloja'],documentos[index].data()['chamado_si'], documentos[index].data()['status'], documentos[index].data()['chamado_interno'], documentos[index].data()['email'],documentos[index].data()['create'],),));
-                                                            //chamado_encerrado(snapshot.data.docs[index].reference);
-                                                            deleta(context,documentos[index],index);
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => encerrado(),));
+                                                            var teste =snapshot.data.docs[index].reference.update({'stExcluido':1});
                                                           }),
                                                         ],
                                                       )

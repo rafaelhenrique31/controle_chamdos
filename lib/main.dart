@@ -17,7 +17,6 @@ import 'package:helpdesk/testegrid.dart';
 import 'package:intl/intl.dart';
 void main() async{
   const twentyMillis = const Duration(milliseconds:20);
-
   initializeDateFormatting();
   Intl.defaultLocale = 'pt_BR';
   final auth = FirebaseAuth.instance;

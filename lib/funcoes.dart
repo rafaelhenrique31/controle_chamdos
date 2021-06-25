@@ -68,16 +68,17 @@ textfildatt(String text, var controler,String label){
     ),
   );
 }
-// var now=DateTime.now();
-//   var sixtyDaysFromNow = now.add(const Duration(minutes: 1));
+
 // funçoes que funcionam
-void send(String problema,String numero_loja,String chamadointerno, String chamadosi,String status,DateTime create, String email, DateTime duracao){
+void send(String problema,String numero_loja,String chamadointerno, String chamadosi,String status,DateTime create, String email, DateTime duracao,int stExcluido){
   FirebaseFirestore.instance.collection('chamados')..add({'chamado_interno': chamadointerno, 'chamado_si':chamadosi,'numeroloja':numero_loja,
     'problema':problema,
-    'status':status,'create': DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()).toString(), 'email': FirebaseAuth.instance.currentUser.email, 'duracao':DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now().add(hours(8)))});
+    'status':status,'create': DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()).toString(), 'email': FirebaseAuth.instance.currentUser.email, 'duracao':DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now().add(hours(8))),
+  'stExcluido':stExcluido=0,
+  });
 }
 Stream<QuerySnapshot> mostrar(){
-  return FirebaseFirestore.instance.collection('chamados').orderBy('create',descending: true).snapshots();
+  return FirebaseFirestore.instance.collection('chamados').where('stExcluido',isLessThanOrEqualTo:   '1' ).orderBy('create',descending: false).snapshots();
 }
 void deleta(BuildContext context,DocumentSnapshot doc, int position) async{
   FirebaseFirestore.instance.collection('chamados').doc(doc.id).delete();

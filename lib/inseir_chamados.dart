@@ -32,7 +32,7 @@ class _InserirState extends State<Inserir> {
   DateTime create ;
   DateTime duracao;
   String email;
-
+  int stExcluido=0;
   @override
   Widget build(BuildContext context) {
     void calcular(){
@@ -138,7 +138,8 @@ class _InserirState extends State<Inserir> {
                                             status.text,
                                             create,
                                             email,
-                                            duracao);
+                                            duracao,
+                                            stExcluido);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
