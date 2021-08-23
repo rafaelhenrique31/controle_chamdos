@@ -77,7 +77,7 @@ class _encerradoState extends State<encerrado> {
                         return GridView.builder(
                             reverse: false,
                             gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
+                              crossAxisCount: 2,
                               mainAxisExtent: 400,
                             ),
                             itemCount: documentos.length,
@@ -95,7 +95,7 @@ class _encerradoState extends State<encerrado> {
                                               shape: BoxShape.rectangle,
                                             ),
                                             height: 350,
-                                            width: 500,
+                                            width: 450,
                                             child: Padding(
                                               padding: const EdgeInsets.all(15),
                                               child: Column(

@@ -5,16 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:helpdesk/Home.dart';
 import 'package:helpdesk/chamado_encerrado.dart';
-import 'package:helpdesk/funcoes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helpdesk/update.dart';
 import 'inseir_chamados.dart';
 import 'update.dart';
-import 'chamado.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:duration/duration.dart';
-import 'package:date_format/date_format.dart';
-import 'package:intl/intl.dart';
+
 class Grid extends StatefulWidget {
   @override
   _GridState createState() => _GridState();
@@ -86,7 +83,6 @@ class _GridState extends State<Grid> {
        Container(
             child: Column(
               children: [
-                //Text(DateFormat.yMd().add_jm().format(agr)),
                 Container(
                   height: 50,
                   child: Row(
@@ -114,7 +110,7 @@ class _GridState extends State<Grid> {
                             return GridView.builder(
                                 reverse: false,
                                 gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
+                                  crossAxisCount: 2,
                                   mainAxisExtent: 400,
                                 ),
                                 itemCount: documentos.length,
@@ -132,7 +128,7 @@ class _GridState extends State<Grid> {
                                                   shape: BoxShape.rectangle,
                                                 ),
                                                 height: 350,
-                                                width: 500,
+                                                width: 450,
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(15),
                                                   child: Column(

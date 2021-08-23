@@ -74,90 +74,87 @@ class _InserirState extends State<Inserir> {
           key: _formkey,
           child: ListView(
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 350,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Card(
-                        elevation: 20,
-                        child: Container(
-                          width: 1000,
-                          height: 700,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 15),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Salvar novo chamado',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                ),
-                                Row(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Card(
+                            elevation: 20,
+                            child: Container(
+                              width: 800,
+                              height: 600,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16, right: 16, top: 15),
+                                child: Column(
                                   children: [
-                                    textfild('numero chamado interno',
-                                        chamadointerno),
-                                    Spacer(),
-                                    textfild('numero chamado si', chamadosi),
+                                    Text(
+                                      'Salvar novo chamado',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                    Row(
+                                      children: [
+                                        textfild('numero chamado interno',
+                                            chamadointerno),
+                                        Spacer(),
+                                        textfild('numero chamado si', chamadosi),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        textfild('descreva o problema', problema),
+                                        Spacer(),
+                                        textfild('numero da loja', numeroloja),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        textfild('Status atual', status),
+                                        Spacer(),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 500,
+                                      height: 80,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          if (_formkey.currentState.validate()) {
+                                            send(
+                                                chamadointerno.text,
+                                                chamadosi.text,
+                                                numeroloja.text,
+                                                problema.text,
+                                                status.text,
+                                                create,
+                                                email,
+                                                duracao,
+                                                stExcluido);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => Grid()));
+                                          }
+                                        },
+                                        child: Text('Salvar'),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    textfild('descreva o problema', problema),
-                                    Spacer(),
-                                    textfild('numero da loja', numeroloja),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    textfild('Status atual', status),
-                                    Spacer(),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 500,
-                                  height: 80,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (_formkey.currentState.validate()) {
-                                        send(
-                                            chamadointerno.text,
-                                            chamadosi.text,
-                                            numeroloja.text,
-                                            problema.text,
-                                            status.text,
-                                            create,
-                                            email,
-                                            duracao,
-                                            stExcluido);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Grid()));
-                                      }
-                                    },
-                                    child: Text('Salvar'),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
             ],
           ),
         ));

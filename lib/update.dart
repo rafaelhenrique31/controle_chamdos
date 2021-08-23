@@ -72,9 +72,6 @@ class _updateState extends State<update> {
           key: _formkey,
           child: ListView(
             children: [
-              Row(
-                children: [
-                  SizedBox(width: 350,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -83,7 +80,7 @@ class _updateState extends State<update> {
                         child: Card(
                           elevation: 20,
                           child: Container(
-                            width: 1000,
+                            width: 900,
                             height: 700,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 16,right: 16,top: 15),
@@ -191,8 +188,6 @@ class _updateState extends State<update> {
                       )
                     ],
                   )
-                ],
-              ),
             ],
           ),
         )
