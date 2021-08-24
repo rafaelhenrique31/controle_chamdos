@@ -43,14 +43,12 @@ textfild(String text, var controler){
     ),
   );
 }
-textfildatt(String text, var controler,String label){
+textfildatt(var controler){
   return SizedBox(
     width: 300,
     height: 100,
     child: TextFormField(
       decoration: InputDecoration(
-        hintText: text,
-        labelText: label ,
         hintStyle: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
@@ -70,11 +68,9 @@ textfildatt(String text, var controler,String label){
 }
 
 // funçoes que funcionam
-void send(String problema,String numero_loja,String chamadointerno, String chamadosi,String status,DateTime create, String email, DateTime duracao,int stExcluido){
-  FirebaseFirestore.instance.collection('chamados')..add({'chamado_interno': chamadointerno, 'chamado_si':chamadosi,'numeroloja':numero_loja,
-    'problema':problema,
-    'status':status,'create': DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()).toString(), 'email': FirebaseAuth.instance.currentUser.email, 'duracao':DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now().add(hours(8))),
-  'stExcluido':stExcluido=0,
+void send(String numero_loja,String problema,DateTime create,DateTime duracao,String email,String chamadosi, String chamadointerno,int stExcluido, String status){
+  FirebaseFirestore.instance.collection('chamados')..add({'numeroloja': numero_loja, 'problema':problema,'create': DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now()).toString(),'duracao':DateFormat.yMMMMEEEEd().add_jm().format(DateTime.now().add(hours(8))),'email': FirebaseAuth.instance.currentUser.email, 'chamado_si':chamadosi, 'chamado_interno':chamadointerno,
+    'stExcluido':stExcluido=0, 'status':status,
   });
 }
 Stream<QuerySnapshot> mostrar(){

@@ -1,6 +1,7 @@
 
 import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:helpdesk/funcoes.dart';
@@ -10,15 +11,16 @@ import 'testegrid.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpdesk/Home.dart';
 class update extends StatefulWidget {
-  final Map data;
   final DocumentReference ref;
   String numeroloja;
   String numerosi;
   String status;
   String problema;
   String chamado_interno;
-  String tempo;
-  update(this.data, this.ref,this.numeroloja,this.numerosi,this.problema,this.status,this.chamado_interno,this.tempo);
+  String email;
+  var create;
+  var duracao;
+  update(this.ref,this.numeroloja,this.numerosi,this.status,this.problema,this.chamado_interno,this.email);
 
   @override
   _updateState createState() => _updateState();
@@ -28,22 +30,18 @@ class _updateState extends State<update> {
 
   GlobalKey <FormState> _formkey = GlobalKey<FormState>();
 
-  TextEditingController chamadointerno = TextEditingController();
-  TextEditingController chamadosi = TextEditingController();
-  TextEditingController data_abertura = TextEditingController();
-  TextEditingController numero_loja = TextEditingController();
-  TextEditingController problema = TextEditingController();
-  TextEditingController abriu = TextEditingController();
-  TextEditingController hora = TextEditingController();
-  TextEditingController status = TextEditingController();
+
 
   var slu = const Duration(hours: 8, minutes: 0, seconds: 0);
   var slu2 = const Duration(hours: 5, minutes: 0, seconds: 0);
-
-
   @override
   Widget build(BuildContext context) {
-
+    TextEditingController chamadointerno = TextEditingController(text: widget.chamado_interno);
+    TextEditingController chamadosi = TextEditingController(text: widget.numerosi);
+    TextEditingController numero_loja = TextEditingController(text: widget.numeroloja);
+    TextEditingController problema = TextEditingController(text: widget.problema);
+    TextEditingController status = TextEditingController(text: widget.status);
+    TextEditingController email = TextEditingController(text: widget.email);
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Grid(),));},
@@ -66,7 +64,6 @@ class _updateState extends State<update> {
                 )
             )
           ],
-
         ),
         body: Form(
           key: _formkey,
@@ -93,14 +90,14 @@ class _updateState extends State<update> {
                                       Column(
                                         children: [
                                           Text('numero chamado interno'.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),),
-                                          textfild(widget.numeroloja,chamadointerno),
+                                          textfildatt(chamadointerno),
                                         ],
                                       ),
                                       Spacer(),
                                       Column(
                                         children: [
                                           Text('numero chamado si'.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),),
-                                          textfild(widget.numerosi,chamadosi),
+                                          textfildatt(chamadosi),
                                         ],
                                       )
                                    ],
@@ -110,7 +107,7 @@ class _updateState extends State<update> {
                                       Column(
                                         children: [
                                           Text('problema'.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),),
-                                          textfild(widget.problema,problema),
+                                          textfildatt(problema),
 
                                         ],
                                       ),
@@ -118,7 +115,7 @@ class _updateState extends State<update> {
                                       Column(
                                         children: [
                                           Text('numero da loja'.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),),
-                                          textfild(widget.chamado_interno,numero_loja),
+                                          textfildatt(numero_loja),
                                        ],
                                       ),
 
@@ -129,10 +126,9 @@ class _updateState extends State<update> {
                                       Column(
                                         children: [
                                           Text('status'.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),),
-                                          textfild(widget.status,status),
+                                          textfildatt(status),
                                         ],
                                       ),
-
                                     ],
                                   ),
                                   SizedBox(width: 500,
@@ -140,44 +136,11 @@ class _updateState extends State<update> {
                                     child: ElevatedButton(
                                       child: Text('Salvar'),
                                       onPressed: (){
-                                        if(status.text.isNotEmpty && problema.text.isNotEmpty && numero_loja.text.isNotEmpty && chamadointerno.text.isNotEmpty && chamadosi.text.isNotEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'status':status.text,'chamado_si':problema.text,'chamado_interno':numero_loja.text,'numeroloja':chamadosi.text,'problema':chamadointerno.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isNotEmpty&&problema.text.isNotEmpty && numero_loja.text.isNotEmpty && chamadointerno.text.isNotEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'status':status.text,'chamado_si':problema.text,'chamado_interno':numero_loja.text,'numero_loja':chamadosi.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isNotEmpty&&problema.text.isNotEmpty && numero_loja.text.isNotEmpty && chamadointerno.text.isEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'status':status.text,'chamado_si':problema.text,'chamado_interno':numero_loja.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isNotEmpty&&problema.text.isNotEmpty && numero_loja.text.isEmpty && chamadointerno.text.isEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'status':status.text,'chamado_si':problema.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isNotEmpty&&problema.text.isEmpty && numero_loja.text.isEmpty && chamadointerno.text.isEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'status':status.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isEmpty&&problema.text.isNotEmpty && numero_loja.text.isEmpty && chamadointerno.text.isEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'chamado_si':problema.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isEmpty&&problema.text.isEmpty && numero_loja.text.isNotEmpty && chamadointerno.text.isEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'chamado_interno':numero_loja.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isEmpty&&problema.text.isEmpty && numero_loja.text.isEmpty && chamadointerno.text.isNotEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'problema':chamadointerno.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isEmpty&&problema.text.isEmpty && numero_loja.text.isEmpty && chamadointerno.text.isEmpty && chamadosi.text.isNotEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'numeroloja':chamadosi.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isNotEmpty&&problema.text.isEmpty && numero_loja.text.isEmpty && chamadointerno.text.isEmpty && chamadosi.text.isNotEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'status':status.text,'numeroloja':chamadosi.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isEmpty&&problema.text.isNotEmpty && numero_loja.text.isEmpty && chamadointerno.text.isNotEmpty && chamadosi.text.isEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'chamado_si':problema.text,'problema':chamadointerno.text});
-                                          Navigator.pop(context);
-                                        } else if(status.text.isEmpty&&problema.text.isEmpty && numero_loja.text.isNotEmpty && chamadointerno.text.isEmpty && chamadosi.text.isNotEmpty){
-                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'chamado_interno':numero_loja.text,'numeroloja':chamadosi.text});
+                                          FirebaseFirestore.instance.collection('chamados').doc(widget.ref.id).update({'numeroloja': numero_loja.text, 'problema':problema.text,
+                                            'email': email.text, 'chamado_si':chamadosi.text, 'chamado_interno':chamadointerno.text, 'stExcluido':0, 'status':status.text,
+                                            });
                                           Navigator.pop(context);
                                         }
-                                   },
                                     ),
                                   ),
                                 ],

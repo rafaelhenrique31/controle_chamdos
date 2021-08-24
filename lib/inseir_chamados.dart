@@ -128,15 +128,15 @@ class _InserirState extends State<Inserir> {
                                         onPressed: () {
                                           if (_formkey.currentState.validate()) {
                                             send(
-                                                chamadointerno.text,
-                                                chamadosi.text,
                                                 numeroloja.text,
                                                 problema.text,
-                                                status.text,
                                                 create,
-                                                email,
                                                 duracao,
-                                                stExcluido);
+                                                email,
+                                                chamadosi.text,
+                                                chamadointerno.text,
+                                                stExcluido,
+                                                status.text);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

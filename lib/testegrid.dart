@@ -140,13 +140,13 @@ class _GridState extends State<Grid> {
                                                         child: Image.asset('imagens/rede.png'),
                                                       ),
                                                       SizedBox(height: 5,),
-                                                      Text('Numero Da Loja : '+documentos[index].data()['chamado_interno'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Text('Numero Da Loja : '+documentos[index].data()['numeroloja'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                                                       Spacer(),
-                                                      Text('Chamado Interno : '+documentos[index].data()['problema'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Text('Chamado Interno : '+documentos[index].data()['chamado_interno'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                                                       Spacer(),
-                                                      Text('Numero da OS : '+documentos[index].data()['numeroloja'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Text('Numero da OS : '+documentos[index].data()['chamado_si'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                                                       Spacer(),
-                                                      Text('Descreva o Problema : '+documentos[index].data()['chamado_si'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                                      Text('Descreva o Problema : '+documentos[index].data()['problema'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                                                       Spacer(),
                                                       Text('Status Atual: '+documentos[index].data()['status'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,),),
                                                       Spacer(),
@@ -160,7 +160,8 @@ class _GridState extends State<Grid> {
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
                                                 IconButton(icon: Icon(Icons.drive_file_rename_outline), onPressed: (){
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => update(data, snapshot.data.docs[index].reference,documentos[index].data()['problema'],documentos[index].data()['numeroloja'],documentos[index].data()['chamado_si'],documentos[index].data()['status'],documentos[index].data()['chamado_interno'],documentos[index].data()['create']), ));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => update( snapshot.data.docs[index].reference,documentos[index].data()['numeroloja'],documentos[index].data()                                                                        ['chamado_si'],documentos[index].data()['status'],documentos[index].data()['problema'],documentos[index].data()['chamado_interno'],
+                                                              documentos[index].data()['email'])));
                                                           }),
                                                           SizedBox(width: 15,),
                                                           IconButton(icon: Icon(Icons.delete,color: Colors.red,), onPressed: (){
