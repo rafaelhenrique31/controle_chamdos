@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:js';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,3 +95,7 @@ void chamado_encerrado(DocumentReference ref){
 void teste(DocumentReference doc){
   FirebaseFirestore.instance.collection('chamados').doc(doc.id).collection('encerrado');
 }
+
+
+
+
